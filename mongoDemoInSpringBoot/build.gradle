@@ -1,0 +1,66 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '2.6.2'
+}
+
+group 'org.example'
+version '1.0'
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+ext {
+    set('springBootAdminVersion', "2.6.5")
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+apply plugin: "io.spring.dependency-management"
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:2.6.2")
+        mavenBom "de.codecentric:spring-boot-admin-dependencies:${springBootAdminVersion}"
+    }
+}
+
+dependencies {
+    //starters
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'de.codecentric:spring-boot-admin-starter-client'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.jolokia:jolokia-core:1.7.1'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    //lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    //logback
+    implementation 'ch.qos.logback:logback-classic'
+
+    //testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+tasks.register("rundev") {
+    group = "application"
+    description = "Runs the Spring Boot application with the dev profile"
+    doFirst {
+        tasks.bootRun.configure {
+            systemProperty("spring.profiles.active", "dev")
+        }
+    }
+    finalizedBy("bootRun")
+}
+
+test {
+    useJUnitPlatform()
+}

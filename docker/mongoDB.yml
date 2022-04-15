@@ -1,0 +1,37 @@
+version: '3.3'
+
+services:
+  mongo:
+    image: mongo:4.4.13
+    container_name: mongoDB
+    environment:
+      MONGO_INITDB_DATABASE: "${MONGO_DATABASE:-mongoDefault}"
+      MONGO_INITDB_ROOT_USERNAME: "${MONGO_USERNAME:-usr}"
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_PASSWORD:-pass}"
+    ports:
+      - "27017:27017"
+    networks:
+      - mongo-network
+
+  mongo-express:
+    image: mongo-express:0.54.0
+    container_name: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_SERVER: mongoDB
+      ME_CONFIG_MONGODB_AUTH_DATABASE: admin
+      ME_CONFIG_BASICAUTH_USERNAME: "${MONGO_USERNAME:-usr}"
+      ME_CONFIG_BASICAUTH_PASSWORD: "${MONGO_PASSWORD:-pass}"
+      ME_CONFIG_MONGODB_ADMINUSERNAME: "${MONGO_USERNAME:-pass}"
+      ME_CONFIG_MONGODB_ADMINPASSWORD: "${MONGO_PASSWORD:-pass}"
+    depends_on:
+      - mongo
+    ports:
+      - "8081:8081"
+    restart: on-failure
+    networks:
+      - mongo-network
+
+networks:
+  mongo-network:
+    driver: bridge

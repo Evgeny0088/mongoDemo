@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '2.6.2'
+}
+
+group 'org.mongodemo'
+version '1.0'
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+ext {
+    set('springBootAdminVersion', "2.6.5")
+}
+
+apply plugin: "io.spring.dependency-management"
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:2.6.2")
+        mavenBom "de.codecentric:spring-boot-admin-dependencies:${springBootAdminVersion}"
+    }
+}
+
+
+dependencies {
+    //starters
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'de.codecentric:spring-boot-admin-starter-server'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    //logback
+    implementation 'ch.qos.logback:logback-classic'
+}
+
+tasks.register("rundev") {
+    group = "application"
+    description = "Runs the Spring Boot application with the dev profile"
+    doFirst {
+        tasks.bootRun.configure {
+            systemProperty("spring.profiles.active", "dev")
+        }
+    }
+    finalizedBy("bootRun")
+}
