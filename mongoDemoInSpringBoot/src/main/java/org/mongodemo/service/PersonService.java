@@ -5,6 +5,8 @@ import org.mongodemo.model.Person;
 import org.mongodemo.repository.PersonRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +25,7 @@ public class PersonService {
         return !personList.isEmpty() ? personList : Collections.emptyList();
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true)
     public List<Person> fetchAllPersonsExceptSpecificName(String name) {
         if (name != null){
             List<Person> persons = personRepo.findPersonNotEqualsToSpecificName(name);
