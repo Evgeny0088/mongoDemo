@@ -3,9 +3,7 @@ package org.mongodemo.controller;
 import org.mongodemo.model.Person;
 import org.mongodemo.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +19,11 @@ public class MainController {
     @GetMapping
     public List<Person> fetchAllPersons(){
         return personService.fetchAllPersons();
+    }
+
+    @PostMapping("/new")
+    public void createNewPerson(@RequestBody Person person){
+        personService.createPerson(person);
     }
 
     @GetMapping("/except")

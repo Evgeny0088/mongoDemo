@@ -1,6 +1,5 @@
 package org.mongodemo.service;
 
-import ch.qos.logback.core.joran.conditional.IfAction;
 import org.mongodemo.model.Person;
 import org.mongodemo.repository.PersonRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +31,10 @@ public class PersonService {
             return !persons.isEmpty() ? persons : Collections.emptyList();
         }
         return Collections.emptyList();
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void createPerson(Person person) {
+        personRepo.save(person);
     }
 }
