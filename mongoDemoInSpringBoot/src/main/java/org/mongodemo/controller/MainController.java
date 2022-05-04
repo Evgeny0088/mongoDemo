@@ -22,8 +22,9 @@ public class MainController {
     }
 
     @PostMapping("/new")
-    public void createNewPerson(@RequestBody Person person){
+    public String createNewPerson(@RequestBody Person person){
         personService.createPerson(person);
+        return String.format("person with email %s is created",person.getEmail());
     }
 
     @GetMapping("/except")

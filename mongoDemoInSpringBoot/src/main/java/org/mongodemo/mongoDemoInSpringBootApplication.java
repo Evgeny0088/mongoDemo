@@ -4,10 +4,9 @@ import com.github.cloudyrock.spring.v5.EnableMongock;
 import org.mongodemo.config.checkVariables;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication
 @EnableMongock
 public class mongoDemoInSpringBootApplication {
 

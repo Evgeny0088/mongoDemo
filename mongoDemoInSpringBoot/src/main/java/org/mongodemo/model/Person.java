@@ -1,6 +1,7 @@
 package org.mongodemo.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 @Document(collection = "person")
 public class Person {
     @MongoId
@@ -22,7 +24,7 @@ public class Person {
     Address address;
     List<String> favourSubject;
     BigDecimal totalSpendInBooks;
-    LocalDateTime dateTime;
+    private LocalDateTime createdOn;
 
     public Person(String firstName,
                   String secondName,
@@ -30,8 +32,7 @@ public class Person {
                   Gender gender,
                   Address address,
                   List<String> favourSubject,
-                  BigDecimal totalSpendInBooks,
-                  LocalDateTime dateTime) {
+                  BigDecimal totalSpendInBooks) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.email = email;
@@ -39,6 +40,5 @@ public class Person {
         this.address = address;
         this.favourSubject = favourSubject;
         this.totalSpendInBooks = totalSpendInBooks;
-        this.dateTime = dateTime;
     }
 }

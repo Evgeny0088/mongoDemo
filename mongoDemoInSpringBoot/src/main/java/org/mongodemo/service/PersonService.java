@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class PersonService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void createPerson(Person person) {
+        person.setCreatedOn(LocalDateTime.now());
         personRepo.save(person);
     }
 }
